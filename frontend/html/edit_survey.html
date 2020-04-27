@@ -87,32 +87,6 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
-        <!--      &lt;!&ndash; Heading &ndash;&gt;-->
-        <!--      <div class="sidebar-heading">-->
-        <!--        Addons-->
-        <!--      </div>-->
-
-        <!--      &lt;!&ndash; Nav Item - Pages Collapse Menu &ndash;&gt;-->
-        <!--      <li class="nav-item">-->
-        <!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">-->
-        <!--          <i class="fas fa-fw fa-folder"></i>-->
-        <!--          <span>Emails</span>-->
-        <!--        </a>-->
-        <!--        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">-->
-        <!--          <div class="bg-white py-2 collapse-inner rounded">-->
-        <!--            <h6 class="collapse-header">Login Screens:</h6>-->
-        <!--            <a class="collapse-item" href="login.html">Login</a>-->
-        <!--            <a class="collapse-item" href="register.html">Register</a>-->
-        <!--            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>-->
-        <!--            <div class="collapse-divider"></div>-->
-        <!--            <h6 class="collapse-header">Other Pages:</h6>-->
-        <!--            <a class="collapse-item" href="404.html">404 Page</a>-->
-        <!--            <a class="collapse-item" href="blank.html">Blank Page</a>-->
-        <!--          </div>-->
-        <!--        </div>-->
-        <!--      </li>-->
-
-
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 
@@ -246,19 +220,7 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <label> Survey Questions</label>
-                <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Cras justo odio
-                        <button type="button" class="btn btn-danger">Remove</button>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Dapibus ac facilisis in
-                        <button type="button" class="btn btn-danger">Remove</button>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Morbi leo risus
-                        <button type="button" class="btn btn-danger">Remove</button>
-                    </li>
+                <ul class="list-group" id="survey_questions">
                 </ul>
 
                 <br>
@@ -270,26 +232,25 @@
                         Add Question to Survey
                     </div>
                     <div class="card-body">
-<!--                        <h5 class="card-title">Question Body</h5>-->
                         <p class="card-text">Type Your Question Body</p>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Default</span>
+                                <span class="input-group-text" >Question</span>
                             </div>
-                            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="question-body">
                         </div>
                         <p class="card-text">Select Your Question Type</p>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                            <input class="form-check-input" type="checkbox" id="boolean" value="option1">
                             <label class="form-check-label" for="inlineCheckbox1">Yes/No</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                            <input class="form-check-input" type="checkbox" id="short-answer" value="option2">
                             <label class="form-check-label" for="inlineCheckbox2">Short Answer</label>
                         </div>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-success">Add</button>
+                        <button type="button" class="btn btn-success" id="add">Add</button>
                     </div>
                 </div>
 
@@ -297,9 +258,8 @@
                 <br>
                 <div class="card" style="width: 100%">
                     <div class="card-body">
-                        <h5 class="card-title">Down with Survey?</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Save it or take it now!</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <h5 class="card-title">Finish Creating the Survey?</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Save it or take it!</h6>
                         <a href="#" class="card-link">Save it</a>
                         <a href="#" class="card-link">Take it</a>
                     </div>
@@ -364,17 +324,8 @@
     <!-- Page level plugins -->
     <script src="../vendor/chart.js/Chart.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="../js/demo/chart-area-demo.js"></script>
-    <script src="../js/demo/chart-bar-demo.js"></script>
-    <script src="../js/demo/chart-pie-demo.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="../js/demo/datatables-demo.js"></script>
+    <!-- Edit Survey javascript File -->
+    <script src="../js/edit_survey.js"></script>
 
 
 
