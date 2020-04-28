@@ -11,45 +11,6 @@ var json = {
             "elements": [
                 {
                     "type": "radiogroup",
-                    "name": "customer_role",
-                    "title": "What best describes your role?",
-                    "hasOther": true,
-                    "choices": [
-                        "Engineering Lead",
-                        "Project Manager",
-                        "Software Developer",
-                        "Designer",
-                        "Product Manager",
-                        "CEO / Founder",
-                        "Customer Support"
-                    ],
-                    "otherText": "Other",
-                    "colCount": 3
-                }, {
-                    "type": "radiogroup",
-                    "name": "start_using",
-                    "title": "How did you start using the product?",
-                    "choices": [
-                        {
-                            "value": "created",
-                            "text": "I created my account"
-                        }, {
-                            "value": "invited",
-                            "text": "I was invited to an account"
-                        }
-                    ]
-                }, {
-                    "type": "radiogroup",
-                    "name": "product_discovering",
-                    "title": "How did you first discover the product? ",
-                    "hasOther": true,
-                    "choices": [
-                        "Friend or colleague", "Search engine", "Facebook", "Twitter", "Blog"
-                    ],
-                    "otherText": "Other",
-                    "colCount": 3
-                }, {
-                    "type": "radiogroup",
                     "name": "paid_customer",
                     "title": "Do you currently pay for the product? ",
                     "isRequired": true,

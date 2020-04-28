@@ -220,6 +220,7 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <label> Survey Questions</label>
+                <div id="no-questions-label">No question in the survey yet </div>
                 <ul class="list-group" id="survey_questions">
                 </ul>
 
@@ -235,7 +236,7 @@
                         <p class="card-text">Type Your Question Body</p>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" >Question</span>
+                                <span class="input-group-text">Question</span>
                             </div>
                             <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="question-body">
                         </div>
@@ -260,8 +261,8 @@
                     <div class="card-body">
                         <h5 class="card-title">Finish Creating the Survey?</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Save it or take it!</h6>
-                        <a href="#" class="card-link">Save it</a>
-                        <a href="#" class="card-link">Take it</a>
+                        <a href="#" class="card-link" id="save-survey">Save it</a>
+                        <a href="#" class="card-link" id="take-survey">Take the survey now</a>
                     </div>
                 </div>
                 </div>
