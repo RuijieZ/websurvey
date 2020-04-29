@@ -155,5 +155,9 @@ $(document).ready( function() {
     // add take survey event
     take_survey_event();
 
+    // make the question sortable
+    $( "#survey_questions" ).sortable();
+    $( "#survey_questions" ).disableSelection();
+
 })
 
