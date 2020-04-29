@@ -117,15 +117,20 @@ function take_survey_event() {
         $("#survey_questions li").each(function (idx, li) {
             let data = {
                 question_body: $(li).contents().get(0).nodeValue,
-                type: $(li).find("span").text()
+                type: $(li).find("span").text(),
+                answer: ""
             };
             window.questions_list.push(data);
         });
+
+        window.localStorage.setItem('questions_list', JSON.stringify(window.questions_list));
 
         if (window.questions_list.length === 0) {
             alert("You need have at least one question");
             return;
         }
+        window.localStorage.setItem("survey_title", $("#survey-title").val() === "" ? "New Survey" : $("#survey-title").val());
+        alert(window.localStorage.getItem("survey_title"))
 
         window.location.replace("survey.html");
     })
