@@ -12,11 +12,11 @@
     <title>Survey Web App</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 
 </head>
@@ -85,10 +85,10 @@
         </li>
 
         <!-- Divider -->
-<!--        <hr class="sidebar-divider">-->
+        <!--        <hr class="sidebar-divider">-->
 
         <!-- Divider -->
-<!--        <hr class="sidebar-divider d-none d-md-block">-->
+        <!--        <hr class="sidebar-divider d-none d-md-block">-->
 
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
@@ -175,8 +175,8 @@
                                 </div>
                             </a><!--        <hr class="sidebar-divider">-->
 
-        <!-- Divider -->
-<!--        <hr class="sidebar-divider d-none d-md-block">-->
+                            <!-- Divider -->
+                            <!--        <hr class="sidebar-divider d-none d-md-block">-->
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="mr-3">
                                     <div class="icon-circle bg-success">
@@ -223,30 +223,77 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <div class="container" id="myWizard">
-
-                    <h3></h3>
-
-                    <hr>
-
-
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                <div class="container">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Completed Surveys</h6>
                         </div>
-                    </div>
-
-                    <br>
-
-
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                            <div class="navbar-nav" id="q-tab">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Questions</th>
+                                        <th>Create Time</th>
+                                        <th>Complete Time</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Survey A</td>
+                                        <td>61</td>
+                                        <td>2011/04/25</td>
+                                        <td>2011/04/25</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Survey B</td>
+                                        <td>63</td>
+                                        <td>2011/07/25</td>
+                                        <td>2011/08/25</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </nav>
+                    </div>
+                </div>
 
-                    <div class="tab-content" id="question-content"></div>
-
+                <hr>
+                <div class="container">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Incompleted Surveys</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Questions</th>
+                                        <th>Create Time</th>
+                                        <th>Complete Time</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Survey A</td>
+                                        <td>61</td>
+                                        <td>2011/04/25</td>
+                                        <td>2011/04/25</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Survey B</td>
+                                        <td>63</td>
+                                        <td>2011/07/25</td>
+                                        <td>2011/08/25</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -297,21 +344,18 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="../js/sb-admin-2.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
 
 <!-- Page level plugins -->
-<script src="../vendor/chart.js/Chart.min.js"></script>
+<script src="vendor/chart.js/Chart.min.js"></script>
 
-<!-- Edit Survey javascript File -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js" integrity="sha256-gJWdmuCRBovJMD9D/TVdo4TIK8u5Sti11764sZT1DhI=" crossorigin="anonymous"></script>
-<script src="../js/survey.js"></script>
 
 
 

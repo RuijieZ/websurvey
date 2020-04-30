@@ -12,11 +12,11 @@
     <title>Survey Web App</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 
 </head>
@@ -155,8 +155,6 @@
                     <li class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>
-                            <!-- Counter - Alerts -->
-                            <!--                <span class="badge badge-danger badge-counter">1+</span>-->
                         </a>
                         <!-- Dropdown - Alerts -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
@@ -224,74 +222,71 @@
             <div class="container-fluid">
 
                 <div class="container">
-                    <div class="card shadow mb-4">
+                    <div class="card">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Completed Surveys</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Previous Questions</h6>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Questions</th>
-                                        <th>Create Time</th>
-                                        <th>Complete Time</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Survey A</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>2011/04/25</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Survey B</td>
-                                        <td>63</td>
-                                        <td>2011/07/25</td>
-                                        <td>2011/08/25</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+
+                            <ul class="list-group" id="questions-bank">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">A new question 1<div><span class="badge badge-pill question-type badge-info" style="margin-right: 20px;">bool</span><button class="btn btn-danger remove-button">Remove</button></div></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">Another question<div><span class="badge badge-pill question-type badge-warning" style="margin-right: 20px;">text</span><button class="btn btn-danger remove-button">Remove</button></div></li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+                <hr>
+
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="m-0 font-weight-bold text-primary">Add a New Question</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Type Your Question Body</p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Question</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="question-body">
                             </div>
+                            <p class="card-text">Select Your Question Type</p>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="boolean" value="option1">
+                                <label class="form-check-label" for="inlineCheckbox1">Yes/No</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="short-answer" value="option2">
+                                <label class="form-check-label" for="inlineCheckbox2">Short Answer</label>
+                            </div>
+                            <br>
+                            <br>
+                            <button type="button" class="btn btn-success" id="add">Add</button>
                         </div>
                     </div>
                 </div>
 
+                <br>
                 <hr>
                 <div class="container">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Incompleted Surveys</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Create A new survey by Drag and Drop below</h6>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Questions</th>
-                                        <th>Create Time</th>
-                                        <th>Complete Time</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Survey A</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>2011/04/25</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Survey B</td>
-                                        <td>63</td>
-                                        <td>2011/07/25</td>
-                                        <td>2011/08/25</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <ul id="new-survey" class="list-group py-md-3">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">Another question<div><span class="badge badge-pill question-type badge-warning" style="margin-right: 20px;">text</span><button class="btn btn-danger remove-button">Remove</button></div></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">Another question<div><span class="badge badge-pill question-type badge-warning" style="margin-right: 20px;">text</span><button class="btn btn-danger remove-button">Remove</button></div></li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title">Finish Creating the Survey?</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Save it or take it!</h6>
+                            <a href="#" class="card-link" id="save-survey">Save it</a>
+                            <a href="#" class="card-link" id="take-survey">Take the survey now</a>
                         </div>
                     </div>
                 </div>
@@ -344,18 +339,18 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="../js/sb-admin-2.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
 
 <!-- Page level plugins -->
-<script src="../vendor/chart.js/Chart.min.js"></script>
-
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+<script src="js/questions.js"></script>
 
 
 
