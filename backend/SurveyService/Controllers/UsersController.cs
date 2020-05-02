@@ -22,8 +22,9 @@ namespace SurveyService.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Users>>> GetUsers(string Name, string Password)
         {
+            Console.WriteLine(Name + Password);
             return await _context.Users.ToListAsync();
         }
 
@@ -77,15 +78,21 @@ namespace SurveyService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Users>> PostUsers(Users users)
+        public async Task<ActionResult<Users>> PostUsers(Users newUser)
         {
-            _context.Users.Add(users);
+            // we have to make sure the user name is unique
+            var existingUsers = _context.Users.Where(u => u.Name == newUser.Name);
+            if (existingUsers.Any()) return Conflict(new { message = $"An existing user with the name '{newUser.Name}' was already found." });
+            if (newUser.Name.Length > 200 || newUser.Name.Length < 5) return StatusCode(422, "User name is too long or too short. A valid User name is between 5 to 200 characters long"); 
+            if (newUser.Password.Length > 200 || newUser.Password.Length < 6) return StatusCode(422, "User password is too long or too short. A valid Password is btween 6 to 200 characters long");
+
+            _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsers", new { id = users.UserId }, users);
+            return CreatedAtAction("GetUsers", new { id = newUser.UserId }, newUser);
         }
 
-/*        // DELETE: api/Users/5
+        // DELETE: api/Users/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Users>> DeleteUsers(int id)
         {
@@ -100,7 +107,7 @@ namespace SurveyService.Controllers
 
             return users;
         }
-*/
+
         private bool UsersExists(int id)
         {
             return _context.Users.Any(e => e.UserId == id);
