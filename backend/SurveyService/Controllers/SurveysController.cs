@@ -20,25 +20,19 @@ namespace SurveyService.Controllers
             _context = context;
         }
 
-        // GET: api/Surveys
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Survey>>> GetSurvey()
-        {
-            return await _context.Survey.ToListAsync();
-        }
 
         // GET: api/Surveys/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Survey>> GetSurvey(int id)
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<IEnumerable<Survey>>> GetSurvey(int userId)
         {
-            var survey = await _context.Survey.FindAsync(id);
+            var survey =  _context.Survey.Where(s => s.UserId == userId);
 
             if (survey == null)
             {
                 return NotFound();
             }
 
-            return survey;
+            return await survey.ToListAsync();
         }
 
         // PUT: api/Surveys/5
@@ -79,6 +73,14 @@ namespace SurveyService.Controllers
         [HttpPost]
         public async Task<ActionResult<Survey>> PostSurvey(Survey survey)
         {
+            System.Diagnostics.Debug.WriteLine("********************************************************************");
+            System.Diagnostics.Debug.WriteLine(survey.CreateDate);
+            if (survey.CreateDate == null)
+            {
+
+                survey.CreateDate = DateTime.Now;
+                survey.CompleteDate = null;
+            }
             _context.Survey.Add(survey);
             await _context.SaveChangesAsync();
 
