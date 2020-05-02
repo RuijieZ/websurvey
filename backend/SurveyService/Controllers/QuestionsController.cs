@@ -11,48 +11,48 @@ namespace SurveyService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class QuestionsController : ControllerBase
     {
         private readonly SurveyContext _context;
 
-        public UsersController(SurveyContext context)
+        public QuestionsController(SurveyContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Questions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Question>>> GetQuestion()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Question.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/Questions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Users>> GetUsers(int id)
+        public async Task<ActionResult<Question>> GetQuestion(int id)
         {
-            var users = await _context.Users.FindAsync(id);
+            var question = await _context.Question.FindAsync(id);
 
-            if (users == null)
+            if (question == null)
             {
                 return NotFound();
             }
 
-            return users;
+            return question;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Questions/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsers(int id, Users users)
+        public async Task<IActionResult> PutQuestion(int id, Question question)
         {
-            if (id != users.UserId)
+            if (id != question.QuestionId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(users).State = EntityState.Modified;
+            _context.Entry(question).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace SurveyService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UsersExists(id))
+                if (!QuestionExists(id))
                 {
                     return NotFound();
                 }
@@ -73,37 +73,37 @@ namespace SurveyService.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Questions
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Users>> PostUsers(Users users)
+        public async Task<ActionResult<Question>> PostQuestion(Question question)
         {
-            _context.Users.Add(users);
+            _context.Question.Add(question);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsers", new { id = users.UserId }, users);
+            return CreatedAtAction("GetQuestion", new { id = question.QuestionId }, question);
         }
 
-/*        // DELETE: api/Users/5
+        // DELETE: api/Questions/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Users>> DeleteUsers(int id)
+        public async Task<ActionResult<Question>> DeleteQuestion(int id)
         {
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var question = await _context.Question.FindAsync(id);
+            if (question == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(users);
+            _context.Question.Remove(question);
             await _context.SaveChangesAsync();
 
-            return users;
+            return question;
         }
-*/
-        private bool UsersExists(int id)
+
+        private bool QuestionExists(int id)
         {
-            return _context.Users.Any(e => e.UserId == id);
+            return _context.Question.Any(e => e.QuestionId == id);
         }
     }
 }

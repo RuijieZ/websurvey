@@ -11,48 +11,48 @@ namespace SurveyService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class SurveysController : ControllerBase
     {
         private readonly SurveyContext _context;
 
-        public UsersController(SurveyContext context)
+        public SurveysController(SurveyContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Surveys
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Survey>>> GetSurvey()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Survey.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/Surveys/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Users>> GetUsers(int id)
+        public async Task<ActionResult<Survey>> GetSurvey(int id)
         {
-            var users = await _context.Users.FindAsync(id);
+            var survey = await _context.Survey.FindAsync(id);
 
-            if (users == null)
+            if (survey == null)
             {
                 return NotFound();
             }
 
-            return users;
+            return survey;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Surveys/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsers(int id, Users users)
+        public async Task<IActionResult> PutSurvey(int id, Survey survey)
         {
-            if (id != users.UserId)
+            if (id != survey.SurveyId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(users).State = EntityState.Modified;
+            _context.Entry(survey).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace SurveyService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UsersExists(id))
+                if (!SurveyExists(id))
                 {
                     return NotFound();
                 }
@@ -73,37 +73,37 @@ namespace SurveyService.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Surveys
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Users>> PostUsers(Users users)
+        public async Task<ActionResult<Survey>> PostSurvey(Survey survey)
         {
-            _context.Users.Add(users);
+            _context.Survey.Add(survey);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsers", new { id = users.UserId }, users);
+            return CreatedAtAction("GetSurvey", new { id = survey.SurveyId }, survey);
         }
 
-/*        // DELETE: api/Users/5
+        // DELETE: api/Surveys/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Users>> DeleteUsers(int id)
+        public async Task<ActionResult<Survey>> DeleteSurvey(int id)
         {
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var survey = await _context.Survey.FindAsync(id);
+            if (survey == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(users);
+            _context.Survey.Remove(survey);
             await _context.SaveChangesAsync();
 
-            return users;
+            return survey;
         }
-*/
-        private bool UsersExists(int id)
+
+        private bool SurveyExists(int id)
         {
-            return _context.Users.Any(e => e.UserId == id);
+            return _context.Survey.Any(e => e.SurveyId == id);
         }
     }
 }
