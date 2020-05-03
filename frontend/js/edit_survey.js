@@ -1,7 +1,7 @@
 function populate_survey_questions() {
     // var data = [{question_body: "question 1", type: "text"}, {question_body: "question 2", type: "bool"}, {question_body: "question 1", type: "bool"}];
-    var q_ul = $('#survey_questions');
-    var data = [];
+    let q_ul = $('#survey_questions');
+    let data = window.data;
     if (data.length === 0) {
         $("#no-questions-label").show();
     } else {
@@ -9,18 +9,18 @@ function populate_survey_questions() {
     }
 
     $.each(data, function (idx) {
-        var li = $('<li/>')
+        let li = $('<li/>')
             .addClass("list-group-item d-flex justify-content-between align-items-center")
-            .text(data[idx]["question_body"])
+            .text(data[idx]["questionBody"])
             .appendTo(q_ul);
 
-        var div = $('<div/>')
+        let div = $('<div/>')
             .appendTo(li);
 
-        var new_class = data[idx]["type"] === "bool" ? "badge-info" : "badge-warning";
+        let new_class = data[idx]["questionType"] === "bool" ? "badge-info" : "badge-warning";
 
 
-        var type = $('<span/>')
+        let type = $('<span/>')
             .addClass("badge badge-pill question-type")
             .addClass(new_class)
             .css("margin-right", "20px")
@@ -28,7 +28,7 @@ function populate_survey_questions() {
             .appendTo(div);
 
 
-        var aaa = $('<button/>')
+        let aaa = $('<button/>')
             .addClass("btn btn-danger remove-button")
             .text("Remove")
             .appendTo(div);
@@ -52,25 +52,25 @@ function initialize_checkbox() {
 function add_survey_question_event() {
     $("#add").click(function() {
         // does not allow empty question body
-        var q_ul = $('#survey_questions');
+        let q_ul = $('#survey_questions');
         if ($("#question-body").val() == "") {
             alert("empty question body");
             return;
         }
 
-        var text = $("#boolean").prop("checked") ? "bool" : "text";
-        var new_class = $("#boolean").prop("checked") ? "badge-info" : "badge-warning";
+        let text = $("#boolean").prop("checked") ? "bool" : "text";
+        let new_class = $("#boolean").prop("checked") ? "badge-info" : "badge-warning";
 
-        var li = $('<li/>')
+        let li = $('<li/>')
             .addClass("list-group-item d-flex justify-content-between align-items-center")
             .text($("#question-body").val())
             .appendTo(q_ul);
 
         // q_ul.text("");
-        var div = $('<div/>')
+        let div = $('<div/>')
             .appendTo(li);
 
-        var type = $('<span/>')
+        let type = $('<span/>')
             .addClass("badge badge-pill question-type")
             .addClass(new_class)
             .css("margin-right", "20px")
@@ -78,7 +78,7 @@ function add_survey_question_event() {
             .appendTo(div);
 
 
-        var aaa = $('<button/>')
+        let aaa = $('<button/>')
             .addClass("btn btn-danger remove-button")
             .text("Remove")
             .appendTo(div);
@@ -106,6 +106,36 @@ function remove_question_event() {
 
 function save_survey_event() {
     $("#save-survey").click(function () {
+        let surveyTitle = $("#survey-title").val();
+        if (surveyTitle === "") {
+            alert("Please enter a title for the survey!");
+            return;
+        }
+
+        let surveyId = createSurvey(window.userId,surveyTitle);
+        if (surveyId == null) {
+            alert("error in creating survey! Please try again!");
+            return;
+        }
+
+        let questions_list = [];
+        $("#survey_questions li").each(function (idx, li) {
+            let question = {
+                questionBody: $(li).contents().get(0).nodeValue,
+                type: $(li).find("span").text(),
+                answer: "",
+                userId: window.userId,
+                surveyId: surveyId
+            };
+            createQuestion(question);
+            questions_list.push(question);
+        });
+
+        if (questions_list.length === 0) {
+            alert("Survey needs to have at least one question!");
+            return;
+        }
+
         alert("Survey saved in the database!")
         window.location.replace("index.html");
     })
@@ -116,7 +146,7 @@ function take_survey_event() {
         window.questions_list = [];
         $("#survey_questions li").each(function (idx, li) {
             let data = {
-                question_body: $(li).contents().get(0).nodeValue,
+                questionBody: $(li).contents().get(0).nodeValue,
                 type: $(li).find("span").text(),
                 answer: ""
             };
@@ -137,6 +167,25 @@ function take_survey_event() {
 }
 
 $(document).ready( function() {
+    const userStr = window.localStorage.getItem("user");
+    if (!userStr) {
+        needToLogin();
+    }
+    let user = JSON.parse(userStr);
+    if (!user['userId']) {
+        needToLogin();
+    }
+    // get token
+    let token = getCredential(user);
+    let userId = getUserId(user);
+    if (!token || !userId) {
+        needToLogin();
+    }
+
+    window.token = token;
+    window.userId = userId;
+    window.data = [];
+
     // populate survey Questions
     populate_survey_questions();
 

@@ -33,7 +33,7 @@ $("document").ready(function () {
         let settings = {
             "url": "https://localhost:44350/api/users",
             "method": "POST",
-            "timeout": 0,
+            "timeout": 10000,
             "headers": {
                 "Content-Type": ["application/json"]
             },

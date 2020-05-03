@@ -117,7 +117,7 @@ namespace SurveyService.Controllers
             _context.Question.Add(question);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(question);
         }
 
         // DELETE: api/Questions/5

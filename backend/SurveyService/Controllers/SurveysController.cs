@@ -102,7 +102,7 @@ namespace SurveyService.Controllers
             _context.Survey.Add(newSurvey);
             await _context.SaveChangesAsync();
 
-            return newSurvey;
+            return Ok(newSurvey);
         }
 
         // DELETE: api/Surveys/5

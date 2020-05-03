@@ -18,7 +18,7 @@ $(document).ready(function () {
         var settings = {
             "url": "https://localhost:44350/api/token",
             "method": "POST",
-            "timeout": 0,
+            "timeout": 10000,
             "headers": {
                 "Content-Type": ["application/json"],
             },
@@ -31,7 +31,7 @@ $(document).ready(function () {
 
         $.ajax(settings).done(function (response) {
             console.log(response);
-            window.localStorage.setItem("user", response);
+            window.localStorage.setItem("user", JSON.stringify(response));
             window.location.href = "index.html";
         }).fail(function (request, status, error) {
             message.css("margin-top: 50px");
