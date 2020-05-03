@@ -12,7 +12,6 @@ namespace SurveyService.Models
         public string QuestionType { get; set; }
         public string QuestionAnwser { get; set; }
 
-        public virtual Survey Survey { get; set; }
         public virtual Users User { get; set; }
     }
 }

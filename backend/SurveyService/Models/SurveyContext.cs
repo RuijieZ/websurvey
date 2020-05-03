@@ -22,9 +22,6 @@ namespace SurveyService.Models
             {
                 entity.ToTable("question");
 
-                entity.HasIndex(e => e.SurveyId)
-                    .HasName("SurveyId");
-
                 entity.HasIndex(e => e.UserId)
                     .HasName("UserId");
 
@@ -43,12 +40,6 @@ namespace SurveyService.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasDefaultValueSql("'_cp850\\\\''bool\\\\'''");
-
-                entity.HasOne(d => d.Survey)
-                    .WithMany(p => p.Question)
-                    .HasForeignKey(d => d.SurveyId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("question_ibfk_2");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Question)
@@ -87,18 +78,28 @@ namespace SurveyService.Models
 
                 entity.ToTable("users");
 
-                entity.HasIndex(e => e.Name)
-                    .HasName("Name")
+                entity.HasIndex(e => e.UserName)
+                    .HasName("UserName")
                     .IsUnique();
 
-                entity.Property(e => e.Name)
+                entity.Property(e => e.FirstName)
                     .IsRequired()
-                    .HasMaxLength(100)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(200)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(100)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(200)
                     .IsUnicode(false);
             });
 

@@ -30,13 +30,13 @@ namespace SurveyService.Controllers
         public async Task<IActionResult> Post(Users _userData)
         {
 
-            if (_userData != null && _userData.Name != null && _userData.Password != null)
+            if (_userData != null && _userData.UserName != null && _userData.Password != null)
             {
                 System.Diagnostics.Debug.WriteLine("**********************************");
-                System.Diagnostics.Debug.WriteLine(_userData.Name);
+                System.Diagnostics.Debug.WriteLine(_userData.UserName);
                 System.Diagnostics.Debug.WriteLine(_userData.Password);
 
-                var user = await GetUser(_userData.Name, _userData.Password);
+                var user = await GetUser(_userData.UserName, _userData.Password);
 
                 if (user != null)
                 {
@@ -46,7 +46,7 @@ namespace SurveyService.Controllers
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                         new Claim("Id", user.UserId.ToString()),
-                        new Claim("Name", user.Name),
+                        new Claim("UserName", user.UserName),
                    };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -55,7 +55,14 @@ namespace SurveyService.Controllers
 
                     var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: signIn);
 
-                    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                    var returnTokenObj = new Token
+                    {
+                        UserId = user.UserId,
+                        TokenString = new JwtSecurityTokenHandler().WriteToken(token),
+                        FirstName = user.FirstName,
+                        LastName = user.LastName
+                    };
+                    return Ok(returnTokenObj);
                 }
                 else
                 {
@@ -70,7 +77,7 @@ namespace SurveyService.Controllers
 
         private async Task<Users> GetUser(string name, string password)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Name == name && u.Password == password);
+            return await _context.Users.FirstOrDefaultAsync(u => u.UserName == name && u.Password == password);
         }
     }
 }

@@ -31,19 +31,19 @@ namespace SurveyService.Controllers
         [HttpPost]
         public async Task<ActionResult<Users>> PostUsers(Users newUser)
         {
-            var existingUsers = _context.Users.Where(u => u.Name == newUser.Name);
+            var existingUsers = _context.Users.Where(u => u.UserName == newUser.UserName);
             // we have to make sure the user name is unique
             if (existingUsers.Any()) 
-                return Conflict(new { message = $"An existing user with the name '{newUser.Name}' already exist." });
+                return Conflict(new { message = $"An existing user with the name '{newUser.UserName}' already exist." });
 
-            if (newUser.Name.Length > 200 || newUser.Name.Length < 5) 
+            if (newUser.UserName.Length > 200 || newUser.UserName.Length < 5) 
                 return StatusCode(422, "User name is too long or too short. A valid User name is between 5 to 200 characters long"); 
             
             if (newUser.Password.Length > 200 || newUser.Password.Length < 6) 
                 return StatusCode(422, "User password is too long or too short. A valid Password is btween 6 to 200 characters long");
 
             if (!IsPasswordStrong(newUser.Password))
-                return StatusCode(422, "Password not strong enough. Strong password should contains at least one upper case and one lower case letter, with no special characters");
+                return StatusCode(422, "Password not strong enough. Strong password should contains at least one upper case and one lower case letter");
 
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
