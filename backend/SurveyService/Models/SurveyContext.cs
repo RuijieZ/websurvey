@@ -7,7 +7,6 @@ namespace SurveyService.Models
     public partial class SurveyContext : DbContext
     {
 
-
         public SurveyContext(DbContextOptions<SurveyContext> options)
             : base(options)
         {
@@ -17,12 +16,14 @@ namespace SurveyService.Models
         public virtual DbSet<Survey> Survey { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Question>(entity =>
             {
                 entity.ToTable("question");
+
+                entity.HasIndex(e => e.SurveyId)
+                    .HasName("SurveyId");
 
                 entity.HasIndex(e => e.UserId)
                     .HasName("UserId");
@@ -30,7 +31,7 @@ namespace SurveyService.Models
                 entity.Property(e => e.QuestionAnwser)
                     .HasMaxLength(200)
                     .IsUnicode(false)
-                    .HasDefaultValueSql("'_utf8mb4\\\\''\\\\'''");
+                    .HasDefaultValueSql("'_cp850\\\\''\\\\'''");
 
                 entity.Property(e => e.QuestionBody)
                     .IsRequired()
@@ -41,7 +42,13 @@ namespace SurveyService.Models
                     .IsRequired()
                     .HasMaxLength(200)
                     .IsUnicode(false)
-                    .HasDefaultValueSql("'_utf8mb4\\\\''bool\\\\'''");
+                    .HasDefaultValueSql("'_cp850\\\\''bool\\\\'''");
+
+                entity.HasOne(d => d.Survey)
+                    .WithMany(p => p.Question)
+                    .HasForeignKey(d => d.SurveyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("question_ibfk_2");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Question)
@@ -59,7 +66,7 @@ namespace SurveyService.Models
 
                 entity.Property(e => e.CompleteDate).HasDefaultValueSql("'NULL'");
 
-                entity.Property(e => e.CreateDate).HasDefaultValueSql("'now()'");
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("'curdate()'");
 
                 entity.Property(e => e.Name)
                     .IsRequired()

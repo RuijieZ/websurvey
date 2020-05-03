@@ -20,36 +20,36 @@ namespace SurveyService.Controllers
             _context = context;
         }
 
-        // GET: api/Questions
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Question>>> GetQuestion()
-        {
-            return await _context.Question.ToListAsync();
-        }
 
         // GET: api/Questions/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Question>> GetQuestion(int id)
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<IEnumerable<Question>>> GetQuestion(int userId)
         {
-            var question = await _context.Question.FindAsync(id);
+            var questions = _context.Question.Where(q => q.UserId == userId);
 
-            if (question == null)
+            if (!questions.Any())
             {
                 return NotFound();
             }
 
-            return question;
+            return await questions.ToListAsync();
         }
 
         // PUT: api/Questions/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutQuestion(int id, Question question)
+        public async Task<ActionResult<Question>> PutQuestion(int id, Question question)
         {
             if (id != question.QuestionId)
             {
-                return BadRequest();
+                return BadRequest("id parameter does not match in the payload");
+            }
+
+            // coud not find a survey that matches the question
+            if (!_context.Survey.Where(s => s.UserId == question.UserId && s.SurveyId == question.SurveyId).Any()) 
+            {
+                return BadRequest($"could not find a survey that matches the question specifies uesrid='{question.UserId}', surveyid = '{question.SurveyId}'"); 
             }
 
             _context.Entry(question).State = EntityState.Modified;
@@ -70,7 +70,7 @@ namespace SurveyService.Controllers
                 }
             }
 
-            return NoContent();
+            return question;
         }
 
         // POST: api/Questions
@@ -79,10 +79,15 @@ namespace SurveyService.Controllers
         [HttpPost]
         public async Task<ActionResult<Question>> PostQuestion(Question question)
         {
+            // doing some validation check
+            // the survey id must belong to that user
+            if (!_context.Survey.Where(s => s.SurveyId == question.SurveyId && s.UserId == question.UserId).Any())
+                return BadRequest($"The survey with survey ID to be '{question.SurveyId}' and user id to be '{question.UserId}' does not exist");
+
             _context.Question.Add(question);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetQuestion", new { id = question.QuestionId }, question);
+            return question;
         }
 
         // DELETE: api/Questions/5

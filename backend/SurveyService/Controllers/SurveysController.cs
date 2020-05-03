@@ -27,7 +27,7 @@ namespace SurveyService.Controllers
         {
             var survey =  _context.Survey.Where(s => s.UserId == userId);
 
-            if (survey == null)
+            if (!survey.Any())
             {
                 return NotFound();
             }
@@ -36,55 +36,53 @@ namespace SurveyService.Controllers
         }
 
         // PUT: api/Surveys/5
+        // 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSurvey(int id, Survey survey)
+        public async Task<ActionResult<Survey>> MarkSurveyComplete(int id)
         {
-            if (id != survey.SurveyId)
+            if (!SurveyExists(id))
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            _context.Entry(survey).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SurveyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var survey = await _context.Survey.FindAsync(id);
+            survey.CompleteDate = DateTime.Now;
+            _context.SaveChanges();
+            return survey;
         }
 
         // POST: api/Surveys
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Survey>> PostSurvey(Survey survey)
+        public async Task<ActionResult<Survey>> PostSurvey(int? userId, string? name)
         {
-            System.Diagnostics.Debug.WriteLine("********************************************************************");
-            System.Diagnostics.Debug.WriteLine(survey.CreateDate);
-            if (survey.CreateDate == null)
+            if (userId == null || name == null)
             {
-
-                survey.CreateDate = DateTime.Now;
-                survey.CompleteDate = null;
+                return BadRequest("userId and survey name cannot be null");
             }
-            _context.Survey.Add(survey);
+
+            // check if no such user found
+            if (!_context.Users.Where(u => u.UserId == userId).Any())
+            {
+                return BadRequest($"User with userId='{userId}' does not exist");
+            }
+
+            // create a new survey object
+            var newSurvey = new Survey
+            {
+                UserId = userId.Value,
+                Name = name,
+                CreateDate = DateTime.Now,
+                CompleteDate = null
+            };
+
+            // save the newSurvey object to the database
+            _context.Survey.Add(newSurvey);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSurvey", new { id = survey.SurveyId }, survey);
+            return newSurvey;
         }
 
         // DELETE: api/Surveys/5
