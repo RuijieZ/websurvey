@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SurveyService.Models;
+using Microsoft.AspNetCore.Authorization;
+using SurveyService.Utils;
 
 namespace SurveyService.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SurveysController : ControllerBase
@@ -25,11 +28,16 @@ namespace SurveyService.Controllers
         [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<Survey>>> GetSurvey(int userId)
         {
+            if (TokenHelper.GetTokenUserIdInClaim(HttpContext) != userId)
+            {
+                return StatusCode(401, "You are not authorized to perform this Action");
+            }
+
             var survey =  _context.Survey.Where(s => s.UserId == userId);
 
             if (!survey.Any())
             {
-                return NotFound();
+                return new List<Survey>();
             }
 
             return await survey.ToListAsync();
@@ -47,7 +55,14 @@ namespace SurveyService.Controllers
                 return NotFound();
             }
             var survey = await _context.Survey.FindAsync(id);
+
+            if (TokenHelper.GetTokenUserIdInClaim(HttpContext) != survey.UserId)
+            {
+                return StatusCode(401, "You are not authorized to perform this Action");
+            }
+
             survey.CompleteDate = DateTime.Now;
+
             _context.SaveChanges();
             return survey;
         }
@@ -61,6 +76,11 @@ namespace SurveyService.Controllers
             if (userId == null || name == null)
             {
                 return BadRequest("userId and survey name cannot be null");
+            }
+
+            if (TokenHelper.GetTokenUserIdInClaim(HttpContext) != userId)
+            {
+                return StatusCode(401, "You are not authorized to perform this Action");
             }
 
             // check if no such user found
@@ -93,6 +113,11 @@ namespace SurveyService.Controllers
             if (survey == null)
             {
                 return NotFound();
+            }
+
+            if (TokenHelper.GetTokenUserIdInClaim(HttpContext) != survey.UserId)
+            {
+                return StatusCode(401, "You are not authorized to perform this Action");
             }
 
             _context.Survey.Remove(survey);

@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SurveyService.Models;
+using Microsoft.AspNetCore.Authorization;
+using SurveyService.Utils;
 
 namespace SurveyService.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class QuestionsController : ControllerBase
@@ -25,11 +28,16 @@ namespace SurveyService.Controllers
         [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestion(int userId)
         {
+            if (TokenHelper.GetTokenUserIdInClaim(HttpContext) != userId)
+            {
+                return StatusCode(401, "You are not authorized to perform this Action");
+            }
+
             var questions = _context.Question.Where(q => q.UserId == userId);
 
             if (!questions.Any())
             {
-                return NotFound();
+                return new List<Question>();
             }
 
             return await questions.ToListAsync();
@@ -46,10 +54,15 @@ namespace SurveyService.Controllers
                 return BadRequest("id parameter does not match in the payload");
             }
 
+            if (TokenHelper.GetTokenUserIdInClaim(HttpContext) != question.UserId)
+            {
+                return StatusCode(401, "You are not authorized to perform this Action");
+            }
+
             // coud not find a survey that matches the question
             if (!_context.Survey.Where(s => s.UserId == question.UserId && s.SurveyId == question.SurveyId).Any()) 
             {
-                return BadRequest($"could not find a survey that matches the question specifies uesrid='{question.UserId}', surveyid = '{question.SurveyId}'"); 
+                return NotFound($"could not find a survey that matches the question specifies uesrid='{question.UserId}', surveyid = '{question.SurveyId}'"); 
             }
 
             _context.Entry(question).State = EntityState.Modified;
@@ -79,15 +92,32 @@ namespace SurveyService.Controllers
         [HttpPost]
         public async Task<ActionResult<Question>> PostQuestion(Question question)
         {
-            // doing some validation check
-            // the survey id must belong to that user
-            if (!_context.Survey.Where(s => s.SurveyId == question.SurveyId && s.UserId == question.UserId).Any())
-                return BadRequest($"The survey with survey ID to be '{question.SurveyId}' and user id to be '{question.UserId}' does not exist");
+            // first check authorization
+            if (TokenHelper.GetTokenUserIdInClaim(HttpContext) != question.UserId)
+            {
+                return StatusCode(401, "You are not authorized to perform this Action");
+            }
+
+            var survey = _context.Survey.Where(s => s.SurveyId == question.SurveyId).FirstOrDefault();
+            
+            if (question.SurveyId != -1)                    // surveyId == -1 means we are creating a question without any survey. In that case, we do not need check past survey Onwner
+            {
+                if (survey == null)
+                {
+                    return StatusCode(400, $"Survey with id: '{question.SurveyId}' does not exist");
+                }
+
+                if (survey.UserId != TokenHelper.GetTokenUserIdInClaim(HttpContext))
+                {
+                    return StatusCode(401, "You are not authorized to peform this action because the survey does not belong to you");
+                }
+            }
+
 
             _context.Question.Add(question);
             await _context.SaveChangesAsync();
 
-            return question;
+            return Ok();
         }
 
         // DELETE: api/Questions/5
@@ -98,6 +128,11 @@ namespace SurveyService.Controllers
             if (question == null)
             {
                 return NotFound();
+            }
+
+            if (TokenHelper.GetTokenUserIdInClaim(HttpContext) != question.UserId)
+            {
+                return StatusCode(401, "You are not authorized to perform this Action");
             }
 
             _context.Question.Remove(question);

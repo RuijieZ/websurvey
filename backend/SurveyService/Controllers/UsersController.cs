@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SurveyService.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace SurveyService.Controllers
 {
@@ -32,7 +34,7 @@ namespace SurveyService.Controllers
             var existingUsers = _context.Users.Where(u => u.Name == newUser.Name);
             // we have to make sure the user name is unique
             if (existingUsers.Any()) 
-                return Conflict(new { message = $"An existing user with the name '{newUser.Name}' was already found." });
+                return Conflict(new { message = $"An existing user with the name '{newUser.Name}' already exist." });
 
             if (newUser.Name.Length > 200 || newUser.Name.Length < 5) 
                 return StatusCode(422, "User name is too long or too short. A valid User name is between 5 to 200 characters long"); 
@@ -41,12 +43,12 @@ namespace SurveyService.Controllers
                 return StatusCode(422, "User password is too long or too short. A valid Password is btween 6 to 200 characters long");
 
             if (!IsPasswordStrong(newUser.Password))
-                return StatusCode(422, "Password not strong enough. Strong password should contain at least one upper case and one lower case letter");
+                return StatusCode(422, "Password not strong enough. Strong password should contains at least one upper case and one lower case letter, with no special characters");
 
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsers", new { id = newUser.UserId }, newUser);
+            return newUser;
         }
 
 

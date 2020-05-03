@@ -6,7 +6,6 @@ namespace SurveyService.Models
 {
     public partial class SurveyContext : DbContext
     {
-
         public SurveyContext(DbContextOptions<SurveyContext> options)
             : base(options)
         {
@@ -15,6 +14,7 @@ namespace SurveyService.Models
         public virtual DbSet<Question> Question { get; set; }
         public virtual DbSet<Survey> Survey { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
