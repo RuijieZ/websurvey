@@ -25,6 +25,7 @@ $(document).ready(function () {
     let dataset = [];
     $.each(window.surveys, function(idx, survey) {
         dataset.push([
+            survey["surveyId"],
             survey["name"],
             getSurveyQuestionsCount(survey, window.questions),
             survey['createDate'],
@@ -42,6 +43,7 @@ $(document).ready(function () {
     $('#dataTable').DataTable({
         data: dataset,
         columns: [
+            { title: "Id"},
             { title: "Title" },
             { title: "Questions" },
             { title: "Create Time" },

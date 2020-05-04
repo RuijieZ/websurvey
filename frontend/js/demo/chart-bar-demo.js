@@ -1,13 +1,23 @@
 // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
-var labels = ["January", "February", "March", "April", "May", "June"];
-var count = {"January":0, "February":0, "March":0, "April":0, "May":0, "June":0}
+let labels = ["January", "February", "March", "April", "May", "June"];
+let count = {"January":0, "February":0, "March":0, "April":0, "May":0, "June":0}
+let translate = {
+    0: "January",
+    1: "February",
+    2: "March",
+    3: "April",
+    4: "May",
+    5: "June"
+}
 function getMonthlySurveyCount () {
     $.each(window.surveys, function (idx, element) {
-        let surveyDate = new Date(element["createdDate"]);
+        let surveyDate = new Date(element["createDate"]);
+        // alert(surveyDate);
         if (surveyDate) {
-            count[surveyDate.getMonth()] += 1;
+            let month = translate[surveyDate.getMonth()];
+            count[month] += 1;
         }
     })
     let res = [];
@@ -120,8 +130,8 @@ function createBarChart() {
                 caretPadding: 10,
                 callbacks: {
                     label: function(tooltipItem, chart) {
-                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                        return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+                        var datasetLabel = "Survey Creation Count";
+                        return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
                     }
                 }
             },
