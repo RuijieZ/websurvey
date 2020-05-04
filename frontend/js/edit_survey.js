@@ -134,7 +134,7 @@ function save_survey_event() {
                 UserId: window.userId,
                 SurveyId: surveyId
             };
-            createQuestion(question, token);
+            createQuestion(question, window.token);
             questions_list.push(question);
         });
 
@@ -176,7 +176,7 @@ function take_survey_event() {
                 UserId: window.userId,
                 SurveyId: surveyId
             };
-            createQuestion(question, token);
+            createQuestion(question, window.token);
             questions_list.push(question);
         });
 

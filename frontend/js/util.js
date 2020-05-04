@@ -49,10 +49,10 @@ function getUserFirstLastName(user) {
 // save surveys in window.survey object
 function getSurveysOrRedirect(userId, token) {
     let settings = {
-        "url": "https://localhost:44350/api/surveys/" + userId,
+        "url": "https://surveyserviceruijie.azurewebsites.net/api/surveys/" + userId,
         "method": "GET",
         "async": false,
-        "timeout": 10000,
+        "timeout": 20000,
         "headers": {
             "Content-Type": ["application/json"],
             "Authorization": "Bearer " + token
@@ -75,10 +75,10 @@ function getSurveysOrRedirect(userId, token) {
 // save questions in window.questions object
 function getQuestionsOrRedirect(userId, token) {
     let settings = {
-        "url": "https://localhost:44350/api/questions/" + userId,
+        "url": "https://surveyserviceruijie.azurewebsites.net/api/questions/" + userId,
         "method": "GET",
         "async": false,
-        "timeout": 10000,
+        "timeout": 20000,
         "headers": {
             "Content-Type": ["application/json"],
             "Authorization": "Bearer " + token
@@ -125,9 +125,9 @@ function getUrlParameter(sParam) {
 
 function getQuestionsBelongToSurveyOrRedirect(token, surveyId) {
     let settings = {
-        "url": "https://localhost:44350/api/questions/" + surveyId,
+        "url": "https://surveyserviceruijie.azurewebsites.net/api/questions/" + surveyId,
         "method": "GET",
-        "timeout": 10000,
+        "timeout": 20000,
         "async": false,
         "headers": {
             "Authorization": "Bearer " + token,
@@ -151,9 +151,9 @@ function getQuestionsBelongToSurveyOrRedirect(token, surveyId) {
 
 function createSurvey(userId, surveyTitle, token) {
     let settings = {
-        "url": "https://localhost:44350/api/surveys?userId={{userId}}&name={{title}}".replace("{{userId}}", userId).replace("{{title}}", surveyTitle),
+        "url": "https://surveyserviceruijie.azurewebsites.net/api/surveys?userId={{userId}}&name={{title}}".replace("{{userId}}", userId).replace("{{title}}", surveyTitle),
         "method": "POST",
-        "timeout": 10000,
+        "timeout": 20000,
         "async": false,
         "headers": {
             "Content-Type": ["application/json"],
@@ -185,9 +185,10 @@ function createSurvey(userId, surveyTitle, token) {
 
 function createQuestion(questionObj, token) {
     let settings = {
-        "url": "https://localhost:44350/api/questions",
+        "url": "https://surveyserviceruijie.azurewebsites.net/api/questions",
         "method": "POST",
-        "timeout": 0,
+        "timeout": 20000,
+        "async": false,
         "headers": {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
@@ -208,9 +209,10 @@ function createQuestion(questionObj, token) {
 
 function updateQuestion(question, token)  {
     let settings = {
-        "url": "https://localhost:44350/api/questions/" + question["questionId"].toString(),
+        "url": "https://surveyserviceruijie.azurewebsites.net/api/questions/" + question["questionId"].toString(),
         "method": "PUT",
-        "timeout": 0,
+        "async": false,
+        "timeout": 20000,
         "headers": {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
@@ -231,9 +233,10 @@ function updateQuestion(question, token)  {
 
 function updateSurvey(survey, token) {
     var settings = {
-        "url": "https://localhost:44350/api/surveys/" + survey["surveyId"].toString(),
+        "url": "https://surveyserviceruijie.azurewebsites.net/api/surveys/" + survey["surveyId"].toString(),
         "method": "PUT",
-        "timeout": 0,
+        "async":false,
+        "timeout": 20000,
         "headers": {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token

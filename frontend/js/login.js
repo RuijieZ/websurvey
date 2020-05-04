@@ -16,9 +16,9 @@ $(document).ready(function () {
         }
 
         var settings = {
-            "url": "https://localhost:44350/api/token",
+            "url": "https://surveyserviceruijie.azurewebsites.net/api/token",
             "method": "POST",
-            "timeout": 10000,
+            "timeout": 20000,
             "headers": {
                 "Content-Type": ["application/json"],
             },

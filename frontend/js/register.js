@@ -31,9 +31,9 @@ $("document").ready(function () {
         }
 
         let settings = {
-            "url": "https://localhost:44350/api/users",
+            "url": "https://surveyserviceruijie.azurewebsites.net/api/users",
             "method": "POST",
-            "timeout": 10000,
+            "timeout": 20000,
             "headers": {
                 "Content-Type": ["application/json"]
             },
