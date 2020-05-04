@@ -252,7 +252,10 @@ function updateSurvey(survey, token) {
     });
 }
 
-
+function logout() {
+    window.localStorage.setItem("user", null);
+    window.location.href = "login.html";
+}
 
 function getDataOrRedirect() {
     const userStr = window.localStorage.getItem("user");

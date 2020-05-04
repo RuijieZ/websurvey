@@ -113,6 +113,11 @@ function save_survey_event() {
             return;
         }
 
+        if ($("#survey_questions li").length === 0) {
+            alert("Survey needs to have at least one question!");
+            return;
+        }
+
         let surveyId = createSurvey(window.userId,surveyTitle, window.token);
         if (surveyId == null) {
             alert("error in creating survey! Please try again!");
@@ -121,7 +126,7 @@ function save_survey_event() {
 
         let questions_list = [];
         $("#survey_questions li").each(function (idx, li) {
-            alert($(li).find("span").text());
+            // alert($(li).find("span").text());
             let question = {
                 QuestionBody: $(li).contents().get(0).nodeValue,
                 QuestionType: $(li).find("span").text(),
@@ -133,10 +138,7 @@ function save_survey_event() {
             questions_list.push(question);
         });
 
-        if (questions_list.length === 0) {
-            alert("Survey needs to have at least one question!");
-            return;
-        }
+
 
         alert("Survey saved in the database!")
         window.location.replace("index.html");
@@ -153,6 +155,11 @@ function take_survey_event() {
             return;
         }
 
+        if ($("#survey_questions li").length === 0) {
+            alert("Survey needs to have at least one question!");
+            return;
+        }
+
         let surveyId = createSurvey(window.userId,surveyTitle, window.token);
         if (surveyId == null) {
             alert("error in creating survey! Please try again!");
@@ -161,6 +168,7 @@ function take_survey_event() {
 
         let questions_list = [];
         $("#survey_questions li").each(function (idx, li) {
+            // alert($(li).find("span").text());
             let question = {
                 QuestionBody: $(li).contents().get(0).nodeValue,
                 QuestionType: $(li).find("span").text(),
@@ -171,11 +179,6 @@ function take_survey_event() {
             createQuestion(question, token);
             questions_list.push(question);
         });
-
-        if (questions_list.length === 0) {
-            alert("Survey needs to have at least one question!");
-            return;
-        }
 
         // window.questions_list = [];
         // $("#survey_questions li").each(function (idx, li) {
