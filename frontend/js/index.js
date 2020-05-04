@@ -11,6 +11,7 @@ $(document).ready(function () {
     });
 
     let completeRate = window.surveys.length === 0 ? 0 : (window.surveys.length - incompleteCount) * 100.0 / window.surveys.length;
+    completeRate = completeRate.toFixed(2);
     $("#imcomplete-surveys-count").text(incompleteCount.toString());
     $("#complete-rate-percentage").text(completeRate.toString() + "%");
     $("#complete-rate-progress-bar").attr("style", "width: " + completeRate.toString() + "%");
@@ -31,14 +32,6 @@ $(document).ready(function () {
             survey['createDate'],
             survey['completeDate']
         ]);
-        // let tablesRows = $("#survey-table-rows");
-        // let template = getRowTemplate();
-        // template = template.replace('{{title}}', survey.name)
-        //     .replace('{{questionCount}}', getSurveyQuestionsCount(survey, window.questions))
-        //     .replace('{{createdDate}}', survey['createDate'])
-        //     .replace('{{completeDate}}', survey['completeDate']);
-        // let rowElement = $.parseHTML(template);
-        // $(rowElement).appendTo(tablesRows);
     });
     $('#dataTable').DataTable({
         data: dataset,

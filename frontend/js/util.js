@@ -206,11 +206,59 @@ function createQuestion(questionObj, token) {
     })
 }
 
+function updateQuestion(question, token)  {
+    let settings = {
+        "url": "https://localhost:44350/api/questions/" + question["questionId"].toString(),
+        "method": "PUT",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        "data": JSON.stringify(question),
+    };
+
+    $.ajax(settings).done(function (response) {
+        console.log("udpate question");
+        console.log(response);
+    }).fail(function (request, status, error) {
+        console.log("error in update the question");
+        console.log(request);
+        console.log(status);
+        console.log(error);
+    });
+}
+
+function updateSurvey(survey, token) {
+    var settings = {
+        "url": "https://localhost:44350/api/surveys/" + survey["surveyId"].toString(),
+        "method": "PUT",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        "data": JSON.stringify(survey),
+    };
+
+    $.ajax(settings).done(function (response) {
+        console.log("udpate survey");
+        console.log(response);
+    }).fail(function (request, status, error) {
+        console.log("error in update the survey");
+        console.log(request);
+        console.log(status);
+        console.log(error);
+    });
+}
+
+
 
 function getDataOrRedirect() {
     const userStr = window.localStorage.getItem("user");
     if (!userStr) {
         needToLogin();
+        return;
     }
     let user = JSON.parse(userStr);
     let token = getCredential(user);
@@ -221,7 +269,11 @@ function getDataOrRedirect() {
 
     if (token == null || userId == null) {
         needToLogin();
+        return;
     }
+
+    window.token = token;
+    window.userId = userId;
 
     getSurveysOrRedirect(userId, token);
     getQuestionsOrRedirect(userId, token);

@@ -104,6 +104,7 @@ function remove_question_event() {
     })
 }
 
+
 function save_survey_event() {
     $("#save-survey").click(function () {
         let surveyTitle = $("#survey-title").val();
@@ -120,9 +121,10 @@ function save_survey_event() {
 
         let questions_list = [];
         $("#survey_questions li").each(function (idx, li) {
+            alert($(li).find("span").text());
             let question = {
                 QuestionBody: $(li).contents().get(0).nodeValue,
-                QuesitonType: $(li).find("span").text(),
+                QuestionType: $(li).find("span").text(),
                 Answer: "",
                 UserId: window.userId,
                 SurveyId: surveyId
@@ -143,44 +145,80 @@ function save_survey_event() {
 
 function take_survey_event() {
     $("#take-survey").click(function () {
-        window.questions_list = [];
-        $("#survey_questions li").each(function (idx, li) {
-            let data = {
-                questionBody: $(li).contents().get(0).nodeValue,
-                type: $(li).find("span").text(),
-                answer: ""
-            };
-            window.questions_list.push(data);
-        });
-
-        window.localStorage.setItem('questions_list', JSON.stringify(window.questions_list));
-
-        if (window.questions_list.length === 0) {
-            alert("You need have at least one question");
+        // should put this in a helper,
+        // but for now let use just get it done and worry about it later
+        let surveyTitle = $("#survey-title").val();
+        if (surveyTitle === "") {
+            alert("Please enter a title for the survey!");
             return;
         }
-        window.localStorage.setItem("survey_title", $("#survey-title").val() === "" ? "New Survey" : $("#survey-title").val());
-        alert(window.localStorage.getItem("survey_title"))
 
-        window.location.replace("survey.html");
+        let surveyId = createSurvey(window.userId,surveyTitle, window.token);
+        if (surveyId == null) {
+            alert("error in creating survey! Please try again!");
+            return;
+        }
+
+        let questions_list = [];
+        $("#survey_questions li").each(function (idx, li) {
+            let question = {
+                QuestionBody: $(li).contents().get(0).nodeValue,
+                QuestionType: $(li).find("span").text(),
+                Answer: "",
+                UserId: window.userId,
+                SurveyId: surveyId
+            };
+            createQuestion(question, token);
+            questions_list.push(question);
+        });
+
+        if (questions_list.length === 0) {
+            alert("Survey needs to have at least one question!");
+            return;
+        }
+
+        // window.questions_list = [];
+        // $("#survey_questions li").each(function (idx, li) {
+        //     let data = {
+        //         questionBody: $(li).contents().get(0).nodeValue,
+        //         type: $(li).find("span").text(),
+        //         answer: ""
+        //     };
+        //     window.questions_list.push(data);
+        // });
+        //
+        // window.localStorage.setItem('questions_list', JSON.stringify(window.questions_list));
+        //
+        // if (window.questions_list.length === 0) {
+        //     alert("You need have at least one question");
+        //     return;
+        // }
+        // window.localStorage.setItem("survey_title", $("#survey-title").val() === "" ? "New Survey" : $("#survey-title").val());
+        // alert(window.localStorage.getItem("survey_title"))
+
+        window.location.replace("survey.html?surveyId=" + surveyId.toString());
     })
 }
 
 $(document).ready( function() {
+    getDataOrRedirect();
     const userStr = window.localStorage.getItem("user");
-    if (!userStr) {
-        needToLogin();
-    }
+    // if (!userStr) {
+    //     needToLogin();
+    //     return;
+    // }
     let user = JSON.parse(userStr);
-    if (!user['userId']) {
-        needToLogin();
-    }
+    // if (!user['userId']) {
+    //     needToLogin();
+    //     return;
+    // }
     // get token
     let token = getCredential(user);
     let userId = getUserId(user);
-    if (!token || !userId) {
-        needToLogin();
-    }
+    // if (!token || !userId) {
+    //     needToLogin();
+    //     return;
+    // }
     let userFirstLastName = getUserFirstLastName(user);
     $("#user-first-last-name").text(userFirstLastName);
 

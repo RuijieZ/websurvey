@@ -49,8 +49,9 @@ function add_question_tags() {
 function add_question_content() {
 
     $.each(window.questions_list, function (idx, element) {
-        let question_body = element["question_body"];
-        let question_type = element["type"];
+        let question_body = element["questionBody"];
+        let question_type = element["questionType"];
+        alert(element);
 
         let question_num = idx + 1;
         let questions_content = $("#question-content");
@@ -175,18 +176,25 @@ function initialize_display() {
     $("h3").text(window.localStorage.getItem("survey_title"));
 }
 
+
+
+
+
+
 function save_result() {
     $("#done").click(function () {
         // first summerize the result and save to backend
         for (let i=1; i <= window.questions_list.length; i++) {
             let element = window.questions_list[i-1];
-            let type = element["type"];
+            let type = element["questionType"];
             if (type === "text") {
-                element["answer"] = $("#textarea-question" + i.toString()).val();
+                element["questionAnwser"] = $("#textarea-question" + i.toString()).val();
             } else {
-                element["answer"] = $("#radio1-question" + i.toString()).prop("checked") ? "Yes" : "No";
+                element["questionAnwser"] = $("#radio1-question" + i.toString()).prop("checked") ? "Yes" : "No";
             }
+            updateQuestion(element, window.token);
         }
+        updateSurvey(window.currentSurveyObj, window.token);
 
         let doc = new jsPDF();
 
@@ -194,8 +202,8 @@ function save_result() {
         // doc.addPage();
         $.each(window.questions_list, function(idx, e) {
             let qid = idx + 1;
-            doc.text(20, 20 + 20 * qid, "Question " + qid.toString() + " " + e["question_body"]);
-            doc.text(25, 20 + 20 * qid + 10, "Answer " + e["answer"])
+            doc.text(20, 20 + 20 * qid, "Question " + qid.toString() + " " + e["questionBody"]);
+            doc.text(25, 20 + 20 * qid + 10, "Answer " + e["questionAnwser"])
         })
         // Save the PDF
         doc.save(window.localStorage.getItem("survey_title") + '.pdf');
@@ -205,7 +213,36 @@ function save_result() {
 
 
 $(document).ready(function () {
-    window.questions_list = JSON.parse(localStorage.getItem('questions_list')) || [];
+    getDataOrRedirect();
+
+    let currentSurveyId = getUrlParameter("surveyId");
+    if (!currentSurveyId) {
+        alert("survey id not present, please check your url.");
+        window.location.href = "index.html";
+    }
+
+    let currentSurveyObj = null;
+    $.each(window.surveys, function (idx, s) {
+        if (s["surveyId"].toString() === currentSurveyId) {
+            currentSurveyObj = s;
+            return false;       // break out of the loop
+        }
+    });
+
+    if (currentSurveyObj == null) {
+        alert("cannot find survey with id= " + currentSurveyId.toString() + ", either survey does not exist or it does not belong to you");
+        window.location.href = "index.html";
+        return;
+    }
+
+    window.currentSurveyObj = currentSurveyObj;
+    window.localStorage.setItem("survey_title", currentSurveyObj["name"]);
+    window.questions_list = [];
+    $.each(window.questions, function (idx, q) {
+        if (q["surveyId"].toString() === currentSurveyId) {
+            window.questions_list.push(q);
+        }
+    });
 
     // initialize question tab
     add_question_tags();
