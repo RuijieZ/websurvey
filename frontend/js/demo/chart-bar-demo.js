@@ -5,8 +5,8 @@ var labels = ["January", "February", "March", "April", "May", "June"];
 var count = {"January":0, "February":0, "March":0, "April":0, "May":0, "June":0}
 function getMonthlySurveyCount () {
     $.each(window.surveys, function (idx, element) {
-        let surveyDate = new Date(element.get("createdDate"));
-        if(surveyDate) {
+        let surveyDate = new Date(element["createdDate"]);
+        if (surveyDate) {
             count[surveyDate.getMonth()] += 1;
         }
     })

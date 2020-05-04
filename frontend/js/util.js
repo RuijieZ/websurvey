@@ -1,13 +1,13 @@
 function getRowTemplate() {
-    return
-    `
+    let res =`
       <tr>
         <td>{{title}}</td>
         <td>{{questionCount}}</td>
         <td>{{createdDate}}</td>
         <td>{{completeDate}}</td>
       </tr>
-    `;
+    `
+    return res;
 }
 
 function  getDate() {
@@ -154,6 +154,7 @@ function createSurvey(userId, surveyTitle, token) {
         "url": "https://localhost:44350/api/surveys?userId={{userId}}&name={{title}}".replace("{{userId}}", userId).replace("{{title}}", surveyTitle),
         "method": "POST",
         "timeout": 10000,
+        "async": false,
         "headers": {
             "Content-Type": ["application/json"],
             "Authorization": "Bearer " + token
@@ -166,34 +167,43 @@ function createSurvey(userId, surveyTitle, token) {
             }),
     };
 
+    let surveyId = null;
     $.ajax(settings).done(function (response) {
         console.log("saving survey: ");
         console.log(response);
-        return response["surveyId"];
+        surveyId = response["surveyId"];
     }).fail(function (request, status, error) {
         console.log("error happened in saving survey");
         console.log(request);
         console.log(status);
         console.log(error);
-        return null;
     });
-    return null;
+    console.log("survey id");
+    console.log(surveyId);
+    return surveyId;
 }
 
-function createQuestion(questionObj) {
+function createQuestion(questionObj, token) {
     let settings = {
         "url": "https://localhost:44350/api/questions",
         "method": "POST",
         "timeout": 0,
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
         },
-        "data": JSON.stringify({"UserId":1,"SurveyId":1,"QuestionBody":"My new question","QuestionType":"bool","QuestionAnwser":""}),
+        "data": JSON.stringify(questionObj),
     };
 
     $.ajax(settings).done(function (response) {
+        console.log("creating question");
         console.log(response);
-    });
+    }).fail(function (request, status, error) {
+        console.log("error in creating the question");
+        console.log(request);
+        console.log(status);
+        console.log(error);
+    })
 }
 
 

@@ -112,7 +112,7 @@ function save_survey_event() {
             return;
         }
 
-        let surveyId = createSurvey(window.userId,surveyTitle);
+        let surveyId = createSurvey(window.userId,surveyTitle, window.token);
         if (surveyId == null) {
             alert("error in creating survey! Please try again!");
             return;
@@ -121,13 +121,13 @@ function save_survey_event() {
         let questions_list = [];
         $("#survey_questions li").each(function (idx, li) {
             let question = {
-                questionBody: $(li).contents().get(0).nodeValue,
-                type: $(li).find("span").text(),
-                answer: "",
-                userId: window.userId,
-                surveyId: surveyId
+                QuestionBody: $(li).contents().get(0).nodeValue,
+                QuesitonType: $(li).find("span").text(),
+                Answer: "",
+                UserId: window.userId,
+                SurveyId: surveyId
             };
-            createQuestion(question);
+            createQuestion(question, token);
             questions_list.push(question);
         });
 
@@ -181,6 +181,8 @@ $(document).ready( function() {
     if (!token || !userId) {
         needToLogin();
     }
+    let userFirstLastName = getUserFirstLastName(user);
+    $("#user-first-last-name").text(userFirstLastName);
 
     window.token = token;
     window.userId = userId;

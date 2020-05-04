@@ -22,15 +22,34 @@ $(document).ready(function () {
     createPieChart();
 
     // populate the surveys table
+    let dataset = [];
     $.each(window.surveys, function(idx, survey) {
-        let template = getRowTemplate();
-        template = template.replace('{{title}}', survey.name)
-            .replace('{{questionCount}}', getSurveyQuestionsCount(survey, window.questions))
-            .replace('{{createdDate}}', survey['createdDate'])
-            .replace('{{completeDate}}', survey['completeDate']);
-        let rowElement = $.parseHTML(template);
-        $("#survey-table-rows").add(rowElement);
-    })
+        dataset.push([
+            survey["name"],
+            getSurveyQuestionsCount(survey, window.questions),
+            survey['createDate'],
+            survey['completeDate']
+        ]);
+        // let tablesRows = $("#survey-table-rows");
+        // let template = getRowTemplate();
+        // template = template.replace('{{title}}', survey.name)
+        //     .replace('{{questionCount}}', getSurveyQuestionsCount(survey, window.questions))
+        //     .replace('{{createdDate}}', survey['createDate'])
+        //     .replace('{{completeDate}}', survey['completeDate']);
+        // let rowElement = $.parseHTML(template);
+        // $(rowElement).appendTo(tablesRows);
+    });
+    $('#dataTable').DataTable({
+        data: dataset,
+        columns: [
+            { title: "Title" },
+            { title: "Questions" },
+            { title: "Create Time" },
+            { title: "Complete Time" }
+        ]
+    });
+
+
 
 
 });
