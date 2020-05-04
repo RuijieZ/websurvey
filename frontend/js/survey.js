@@ -206,6 +206,7 @@ function save_result() {
         })
         // Save the PDF
         doc.save(window.localStorage.getItem("survey_title") + '.pdf');
+        window.location.href = "index.html";
 
     })
 }
