@@ -51,7 +51,6 @@ function add_question_content() {
     $.each(window.questions_list, function (idx, element) {
         let question_body = element["questionBody"];
         let question_type = element["questionType"];
-        alert(element);
 
         let question_num = idx + 1;
         let questions_content = $("#question-content");

@@ -34,6 +34,19 @@ $(document).ready(function () {
         ]);
     });
     $('#dataTable').DataTable({
+         "columnDefs": [ {
+             "targets": -1,
+             // "defaultContent": '<a href="survey.html?surveyId=" class="card-link" id="take-survey">Take the survey now</a>',
+             "render": function (data, type, row) {
+                 if (data == null) {
+                     let link = '<a href="survey.html?surveyId={{surveyId}}" class="card-link" id="take-survey">Take the survey now</a>'.replace("{{surveyId}}", row[0].toString());
+                     return link;
+                 } else {
+                     return row[4];
+                 }
+
+             }
+         }],
         data: dataset,
         columns: [
             { title: "Id"},
